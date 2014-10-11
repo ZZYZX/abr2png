@@ -12,4 +12,4 @@ all:
 .PHONY: clean
 
 clean:
-	rm -rf abr2png
+	rm -rf abr2png *.o

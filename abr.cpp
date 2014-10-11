@@ -13,7 +13,6 @@ bool invert    = false;  // -i
 bool png       = false;  // -png
 bool pgm       = false;  // -pgm
 int  png_level = 9;      // zlib compression level
-//bool raw=false;
 
 bool find_key(string key,int argc, char* argv[]);
 
@@ -27,49 +26,42 @@ void invert_brush(GimpBrush * brush)
 
 int main(int argc, char* argv[])
 {
-	if(argc<=1)
+	if(argc < 2)
 	{
 		cerr
 			<<"Name:"<<endl
-			<<"    abr2prn - Photoshop Brush ripper"<<endl
+			<<"    abr2png - Photoshop Brush converter"<<endl
 			<<endl
 			<<"Version:"<<endl
 			<<"    abr2png v.2.0 (23-oct-2008)"<<endl
 			<<endl
 			<<"Description:"<<endl
-			<<"    abr2png - tool  for   rip  Photoshop   Brush  (.abr)  and"<<endl
+			<<"    abr2png - tool to convert from Photoshop Brush (.abr) and"<<endl
 			<<"              PaintShopPro (.jbr) to Portable Grayscale (.pgm)"<<endl
-			<<"              or  Portable  Network  Graphics  (.png)  format."<<endl
+			<<"              or Portable Network Graphics (.png) formats"<<endl
 			<<endl
-			<<"Synopsys:"<<endl
+			<<"Usage:"<<endl
 			<<"    abr2png [options] [file.abr]"<<endl
 			<<endl
 			<<"Options:"<<endl
 			<<"    -i    invert image"<<endl
-			<<"    -pgm  output to pgm file format"<<endl
 			<<"    -png  output to png file format (default)"<<endl
+			<<"    -pgm  output to pgm file format"<<endl
 			<<"    -c0"<<endl
 			<<"    ..."<<endl
 			<<"    -c9   compression level. -c0 - no compression"<<endl
 			<<"                             -c1 - best speed"<<endl
 			<<"                             -c9 - best compression (default)"<<endl
-			<<"Exam.:"<<endl
-			<<"    abr2png -png -c9 brush.abr "<<endl
-			<<"        will be created files (png, compression level = 9): "<<endl
-			<<"            brush_0001.png,"<<endl
-			<<"            brush_0002.png,"<<endl
-			<<"            ...,"<<endl
-			<<"            brush_000n.png (n is brush count)" <<endl
 			<<endl
 			<<"Copyright (c) 2008, D.Gar'kaev aka Dickobraz (dickobraz@mail.ru)"<<endl;
 
 		return 1;
 	}
 
-	invert=find_key("-i",argc,argv);
-	png=find_key("-png",argc,argv);
-	pgm=find_key("-pgm",argc,argv);
-	if (png==false && pgm==false) png=true;
+	invert = find_key("-i", argc,argv);
+	png = find_key("-png", argc,argv);
+	pgm = find_key("-pgm", argc,argv);
+	if (png == false && pgm == false) png = true;
 	if (find_key("-c0",argc,argv)) png_level=0;
 	if (find_key("-c1",argc,argv)) png_level=1;
 	if (find_key("-c2",argc,argv)) png_level=2;
@@ -83,7 +75,7 @@ int main(int argc, char* argv[])
 
 
 	brush_list_t::iterator list_iter;
-	char *file_name=argv[argc-1];
+	char *file_name = argv[argc-1];
 	brush_list_t* b_l = brush_load_abr((const char *)file_name);
 	if (!b_l)
 		return 1;
@@ -95,18 +87,16 @@ int main(int argc, char* argv[])
 	int index=0;
 	char s_index[128]={0};
 
-	for(list_iter = b_l->begin(); list_iter != b_l->end(); list_iter++)
-	{
-
+	for(list_iter = b_l->begin(); list_iter != b_l->end(); list_iter++) {
 		gbrush=*list_iter;
 		data_size=gbrush->mask->height*gbrush->mask->width*gbrush->mask->bytes;
 		sprintf(s_index,"%03d",index++);
-		if(pgm)
-		{
+
+		if(pgm) {
 			fname=std::string((char *)file_name)+std::string("_")+std::string(s_index)+std::string(".pgm");
 			fout=fopen(fname.c_str(),"wb");
-			if(fout)
-			{
+
+			if(fout) {
 				sprintf(head,"P5 %d %d 255\n",gbrush->mask->width,gbrush->mask->height);
 				fwrite(head,strlen(head),1,fout);
 				invert_brush(gbrush);
@@ -115,27 +105,27 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		if(png)
-		{
-			fname=std::string((char *)file_name)+std::string("_")+std::string(s_index)+std::string(".png");
+		if(png) {
+			fname = std::string((char *)file_name)+std::string("_")+std::string(s_index)+std::string(".png");
 			if (invert)
 				invert_brush(gbrush);
 			bool r = WritePNG(gbrush->mask->width, gbrush->mask->height, gbrush->mask->data, 1, COLOR_GRAY, png_level, fname.c_str());
 		}
 
 	}
+
 	return 0;
 }
 
 bool find_key(string key, int argc, char* argv[])
 {
 	bool key_ok=false;
-	for (int i=0;i<argc;i++)
+	for (int i = 0; i < argc; i++)
 	{
 		string par(argv[i]);
-		if (par==key)
+		if (par == key)
 		{
-			key_ok=true;
+			key_ok = true;
 			break;
 		}
 	}

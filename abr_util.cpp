@@ -61,22 +61,23 @@ abr_supported (AbrHeader *abr_hdr)
     case 1:
     case 2:
       return true;
-      break;
+    break;
 
     case 6:
       /* in this case, count contains format sub-version */
-      if (abr_hdr->count == 1 || abr_hdr->count == 2)
+      if(abr_hdr->count == 1 || abr_hdr->count == 2)
         return true;
-      break;
-default:
-		  std::cerr<<"Brush version is "<<abr_hdr->version<<". Unsupported."<<std::endl;
+    break;
+
+    default:
+		  std::cerr<<"Brush version "<<abr_hdr->version<<" is not supported."<<std::endl;
     }
 
   return false;
 }
 
 //static GList * 
-static brush_list_t * brush_load_abr_v6 (FILE         *file,
+static brush_list_t * brush_load_abr_v6 (FILE *file,
                    AbrHeader    *abr_hdr,
                    const char  *filename,
                    GError      **error)
@@ -214,12 +215,12 @@ static int abr_rle_decode (FILE   *file, char  *buffer, int  height)
 
 
 static GimpBrush *
-brush_load_abr_brush_v6 (FILE         *file,
-                              AbrHeader    *abr_hdr,
-                              gint32        max_offset,
-                              gint          index,
-                              const gchar  *filename,
-                              GError      **error)
+brush_load_abr_brush_v6 (FILE *file,
+                    AbrHeader *abr_hdr,
+                       gint32 max_offset,
+                         gint index,
+                  const gchar *filename,
+                       GError **error)
 {
   GimpBrush *brush = NULL;
   guchar    *mask;

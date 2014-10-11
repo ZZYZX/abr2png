@@ -35,7 +35,7 @@ struct  _GObject
 };
 
 
-typedef struct _GObject                  GObject;
+typedef struct _GObject GObject;
 
 struct _GimpObject
 {
@@ -49,7 +49,7 @@ struct _GimpObject
   guint    disconnected;
 };
 
-typedef struct _GimpObject          GimpObject;
+typedef struct _GimpObject GimpObject;
 
 struct _GimpViewable
 {
@@ -58,7 +58,7 @@ struct _GimpViewable
   gchar      *stock_id;
 };
 
-typedef struct _GimpViewable        GimpViewable;
+typedef struct _GimpViewable GimpViewable;
 
 typedef guint32 GQuark;
 
@@ -67,7 +67,7 @@ struct _GimpVector2
   gdouble x, y;
 };
 
-typedef struct _GimpVector2             GimpVector2;
+typedef struct _GimpVector2 GimpVector2;
 
 struct _TempBuf
 {

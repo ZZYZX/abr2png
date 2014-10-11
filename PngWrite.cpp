@@ -1,5 +1,3 @@
-//an example of how to write a PNG file (extract from my image class)
-
 #include "PngWrite.h"
 #include "png.h"
 
@@ -13,7 +11,7 @@ bool WritePNG(int m_width, int m_height, unsigned char* m_pData, int m_bytesPerP
   if(!pFile)
     return false;
 
-  png_structp pPng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL,NULL, NULL);
+  png_structp pPng = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
   if (!pPng)
   {
     fclose(pFile);
@@ -38,10 +36,8 @@ bool WritePNG(int m_width, int m_height, unsigned char* m_pData, int m_bytesPerP
 
   png_init_io(pPng, pFile);
 
-  // Z_NO_COMPRESSION         0
-  // Z_BEST_SPEED             1
-  // Z_BEST_COMPRESSION       9
-  png_set_compression_level(pPng, m_clevel); //compression level 0(none)-9(best compression) 
+  // compression level 0(none)-9(best compression) 
+  png_set_compression_level(pPng, m_clevel);
 
   if (m_colorType == COLOR_GRAY)
   {
@@ -77,8 +73,7 @@ bool WritePNG(int m_width, int m_height, unsigned char* m_pData, int m_bytesPerP
   BYTE* pImgData = m_pData;
 
   //write non-interlaced buffer  
-  for(int row=0; row <m_height; ++row)
-  {
+  for(int row=0; row < m_height; ++row) {
     png_write_row(pPng, pImgData);
     pImgData += bytesPerRow;
   }
